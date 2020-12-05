@@ -81,7 +81,6 @@ fun checkForValidPassports2(data: List<Map<String, String>>): Pair<Int, Int> {
                     }
                 }
                 if (!isValid) {
-//                    println(dataMap)
                     invalidPassports++
                     return@mapLoop
                 }
@@ -102,7 +101,7 @@ fun regExMatch(rex: Regex, data: String): Boolean {
 
 fun main() {
     var returnedData = checkForValidPassports(readPassportData("data_day4"))
-//    println("${returnedData.first} valid passports and ${returnedData.second} invalid passports")
+    println("${returnedData.first} valid passports and ${returnedData.second} invalid passports")
     returnedData = checkForValidPassports2(readPassportData("data_day4"))
     println("${returnedData.first} valid passports and ${returnedData.second} invalid passports")
 }
