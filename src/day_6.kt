@@ -34,10 +34,28 @@ fun countCustomsEntry(data: List<List<String>>): Int{
     return totalYes
 }
 
-fun countCustomsEntryPartB() {
-    
+fun countCustomsEntryPart2(data: List<List<String>>): Int {
+    var totalYes = 0
+    data.forEach {group ->
+        val groupTotal = group.size
+        val entrySet = mutableMapOf<Char, Int>()
+        group.forEach {entry ->
+            entry.forEach {
+                var counter = entrySet.getOrPut(it, {0})
+                entrySet[it] = ++counter
+            }
+        }
+        entrySet.forEach {
+            if (it.value == groupTotal) {
+                totalYes++
+            }
+        }
+    }
+    return totalYes
 }
 
 fun main() {
-    println("Total yes entries: ${countCustomsEntry(readCustomsData("data/data_day6"))}")
+    val data = readCustomsData("data/data_day6")
+    println("Total yes entries: ${countCustomsEntry(data)}")
+    println("Total all yes entries: ${countCustomsEntryPart2(data)}")
 }
