@@ -65,7 +65,7 @@ fun findMySeat(data: List<Int>): Int {
 }
 
 fun main() {
-    val seatIds = calculateSeatIds(readBoardingPasses("data_day5"))
+    val seatIds = calculateSeatIds(readBoardingPasses("data/data_day5"))
     println("Largest Seat: ${seatIds.max()}")
     println("Found my seat in the weirdest way possible! Number ${findMySeat(seatIds)}")
 }

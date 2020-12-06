@@ -13,7 +13,7 @@ fun readIt(fileName: String): List<Int> {
 fun getPair() {
     var magicOutput = -1
     val magicNum = 2020
-    val data = readIt("data").sortedDescending()
+    val data = readIt("data/data_day1").sortedDescending()
 
     data.takeWhile { magicOutput == -1 }.forEach first@{ firstNum ->
         val numToFind = magicNum - firstNum
@@ -29,7 +29,7 @@ fun getPair() {
 fun getTriple() {
     var magicOutput = -1
     val magicNum = 2020
-    val data = readIt("data").sortedDescending()
+    val data = readIt("data/data_day1").sortedDescending()
     val reversedData = data.reversed()
 
     data.takeWhile { magicOutput == -1 }.forEach first@{ firstNum ->

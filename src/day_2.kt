@@ -44,7 +44,7 @@ fun part2PasswordCheck(data: List<Triple<String, String, String>>): Int {
 }
 
 fun main() {
-    val passwordListAndData = readAndFormat("data_day2")
+    val passwordListAndData = readAndFormat("data/data_day2")
     println("${part1PasswordCheck(passwordListAndData)} Valid Passwords out of ${passwordListAndData.size} passwords")
     println("${part2PasswordCheck(passwordListAndData)} Valid Passwords out of ${passwordListAndData.size} passwords")
 }

@@ -100,8 +100,8 @@ fun regExMatch(rex: Regex, data: String): Boolean {
 }
 
 fun main() {
-    var returnedData = checkForValidPassports(readPassportData("data_day4"))
+    var returnedData = checkForValidPassports(readPassportData("data/data_day4"))
     println("${returnedData.first} valid passports and ${returnedData.second} invalid passports")
-    returnedData = checkForValidPassports2(readPassportData("data_day4"))
+    returnedData = checkForValidPassports2(readPassportData("data/data_day4"))
     println("${returnedData.first} valid passports and ${returnedData.second} invalid passports")
 }

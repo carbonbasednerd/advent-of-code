@@ -39,6 +39,6 @@ fun forestThroughTrees2(data: List<String>): Int {
 }
 
 fun main() {
-    println("Ouch! You hit ${forestThroughTrees1(readTreeMap("data_day3").drop(verticalBaseMove))} trees!")
-    println("Ouch! You hit ${forestThroughTrees2(readTreeMap("data_day3"))} trees!")
+    println("Ouch! You hit ${forestThroughTrees1(readTreeMap("data/data_day3").drop(verticalBaseMove))} trees!")
+    println("Ouch! You hit ${forestThroughTrees2(readTreeMap("data/data_day3"))} trees!")
 }
