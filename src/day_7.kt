@@ -12,7 +12,7 @@ fun readLuggageData(fileName: String): Map<String, Map<String, Int>> {
         val rules = mutableMapOf<String, Int>()
         splitRules.forEach {
             var bagType = it.replace("bag[s]?.?".toRegex(), "").trim()
-            var number = bagType.filter {x -> x.isDigit()}
+            var number = bagType.filter { x -> x.isDigit() }
             if (number != "") {
                 bagType = bagType.replace("$number ", "")
             }
@@ -26,7 +26,7 @@ fun readLuggageData(fileName: String): Map<String, Map<String, Int>> {
 
 fun findProperBagsColorsForTransport(bagToPack: String): Int {
     var counter = 0
-    luggageRules.forEach mainLoop@{bagRule ->
+    luggageRules.forEach mainLoop@{ bagRule ->
         if (bagRule.value.containsKey(bagToPack)) {
             validGoldCarryingBags.add(bagRule.key)
             counter++
@@ -65,8 +65,18 @@ fun recursiveBagSearch(bagToPack: String, bagToCheck: String): Int {
     return counter
 }
 
+fun countTotalBags(bagToCount: String): Int {
+    var bagSubTotal = 1
+    luggageRules[bagToCount]!!.forEach {
+        if (it.key != "no other") {
+            bagSubTotal += it.value * countTotalBags(it.key)
+        }
+    }
+    return bagSubTotal
+}
+
 fun main() {
     luggageRules = readLuggageData("data/data_day7")
-    println(luggageRules.size)
     println(findProperBagsColorsForTransport("shiny gold"))
+    println(countTotalBags("shiny gold")-1)
 }
