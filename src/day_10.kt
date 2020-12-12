@@ -146,11 +146,32 @@ fun testCombinations2(): Int {
     return paths
 }
 
+fun testCombinations4(): Int {
+    val sortedJoltData = joltData.sorted()
+    val children = mutableMapOf<Int, Int>()
+    children[sortedJoltData[0]] = 1
+    sortedJoltData.forEachIndexed { index, i ->
+        val joltRange = ( i+1..i+3)
+        for (x in (1..3)) {
+            if (index + x >= sortedJoltData.size) break
+            if (sortedJoltData[index + x] in joltRange){
+                if (children.containsKey(sortedJoltData[index + x])) {
+                    children.put(sortedJoltData[index + x], children[sortedJoltData[index + x]]!!+children[i]!!)
+                } else {
+                    children[sortedJoltData[index + x]] = children[i]!!
+                }
+            }
+        }
+    }
+    return children.values.max()!!
+}
+
 
 fun main() {
     readJolts("data/test_data_day10_1")
     println("Result of jolt testing is ${testJoltAdapters()}")
-    joltDataSorted.addAll(joltData.sorted())
-    println("Number of permutations ${testCombinations2()}")
-    println("Number of permutations ${testCombinations3(0)}")
+    println("Find all combinations ${testCombinations4()}")
+//    joltDataSorted.addAll(joltData.sorted())
+//    println("Number of permutations ${testCombinations2()}")
+//    println("Number of permutations ${testCombinations3(0)}")
 }
