@@ -35,7 +35,7 @@ fun findEarliestBus(): Int {
 }
 
 //part 2
-data class Bus(val id: Int, val distance: Int, val times: MutableList<BigInteger> = mutableListOf(), var seed: BigInteger = BigInteger.ZERO) {
+data class Bus(val id: Int, val distance: Int, var times: MutableList<BigInteger> = mutableListOf(), var seed: BigInteger = BigInteger.ZERO) {
     fun generateTimes() {
         var count = seed
         for (x in (0..1000)) {
@@ -45,8 +45,13 @@ data class Bus(val id: Int, val distance: Int, val times: MutableList<BigInteger
         seed = times.last()
     }
 
-    fun check(time: BigInteger) {
-        
+    fun check(time: BigInteger): Boolean {
+        return times.contains(time+distance.toBigInteger())
+    }
+
+    fun cleanUp() {
+        val middle = times.size / 2
+        times = times.subList(0, middle)
     }
 }
 
@@ -69,78 +74,48 @@ fun readBusTimes2(fileName: String) {
     }
 }
 
-val a = Pair(17, 0)
-val b = Pair(13, 2)
-val c = Pair(19, 3)
-
-//val d = Pair(31, 6)
-//val e = Pair(19, 7)
-var aCounter = mutableListOf<Int>()
-var bCounter = mutableListOf<Int>()
-var cCounter = mutableListOf<Int>()
-var dCounter = 0
-var eCounter = 0
-
-fun findBusPattern(): Int {
-    var checkVal = -1
-    while (checkVal == -1) {
+fun findBusPattern(): BigInteger {
+    var timeStamp = BigInteger.ZERO
+    var checkVal = false
+    var count = 0
+    while (checkVal == false) {
+        var report = true
         busses.forEach {
             it.generateTimes()
-        }
-
-        busses.first().times.forEach {
-            busses.forEachIndexed { index, bus ->
-                if (index != 0) {
-                    it.check(it)
-                }
+            if (report) {
+                println(++count)
+                report = false
             }
         }
-    }
-    return checkVal
-}
 
-fun check(): Int {
-    var found = -1
-    println("Checking ${aCounter.first()} and ${aCounter.last()}")
-    for (value in aCounter) {
-        var flag = true
-        if (!bCounter.contains(value + 2)) {
-            flag = false
+        for (ts in busses.first().times) {
+            val flagList = busses.map{BigInteger.ZERO}.toMutableList()
+            busses.forEachIndexed { index, bus ->
+                if (index != 0) {
+                    if (bus.check(ts)) {
+                        flagList[index] = ts
+                    }
+                } else {
+                    flagList[index] = ts
+                }
+            }
+            checkVal = !flagList.contains(BigInteger.ZERO)
+            if (checkVal) {
+                timeStamp = flagList.first()
+                break
+            }
         }
-        if (!cCounter.contains(value + 3)) {
-            flag = false
-        }
-        if (flag) {
-            found = value
-            break
-        }
+        busses.forEach { it.cleanUp() }
     }
-    return found
+    return timeStamp
 }
-
-//fun counterCheck(): Boolean {
-//    var flag = true
-//    if (bCounter-aCounter != 1) {
-//        flag = false
-//    }
-//    if (cCounter-aCounter != 4) {
-//        flag = false
-//    }
-//    if (dCounter-aCounter != 6) {
-//        flag = false
-//    }
-//    if (eCounter-aCounter != 7) {
-//        flag = false
-//    }
-//    return flag
-//}
 
 fun main() {
     val dataFile = "data/test_data_day13"
-    readBusTimes(dataFile)
-    println("Earliest Bus I can take is ${findEarliestBus()}")
+//    readBusTimes(dataFile)
+//    println("Earliest Bus I can take is ${findEarliestBus()}")
 
     readBusTimes2(dataFile)
     println(busses)
-//    println("Find bus patter: ${findBusPattern()}")
+    println("Find bus pattern: ${findBusPattern()}")
 }
