@@ -1,5 +1,4 @@
 import java.io.File
-import java.math.BigInteger
 
 var timeToLeave: Int = 0
 var busRoutes = mutableListOf<Int>()
@@ -35,87 +34,38 @@ fun findEarliestBus(): Int {
 }
 
 //part 2
-data class Bus(val id: Int, val distance: Int, var times: MutableList<BigInteger> = mutableListOf(), var seed: BigInteger = BigInteger.ZERO) {
-    fun generateTimes() {
-        var count = seed
-        for (x in (0..1000)) {
-            count += id.toBigInteger()
-            times.add(count)
-        }
-        seed = times.last()
-    }
+data class Bus(val offset: Int, val bus: Long)
 
-    fun check(time: BigInteger): Boolean {
-        return times.contains(time+distance.toBigInteger())
-    }
-
-    fun cleanUp() {
-        val middle = times.size / 2
-        times = times.subList(0, middle)
-    }
-}
-
-val busses = mutableListOf<Bus>()
-
-fun readBusTimes2(fileName: String) {
-    var header = true
+fun readBusTimes2(fileName: String): List<String> {
+    val buffer = mutableListOf<String>()
     File(fileName).forEachLine {
-        if (header) {
-            timeToLeave = it.toInt()
-            header = false
-        } else {
-            val parsedData = it.split(',')
-            parsedData.forEachIndexed { index, s ->
-                if (s != "x") {
-                    busses.add(Bus(s.toInt(), index))
-                }
-            }
-        }
+        buffer.add(it)
     }
+    return buffer
 }
 
-fun findBusPattern(): BigInteger {
-    var timeStamp = BigInteger.ZERO
-    var checkVal = false
-    var count = 0
-    while (checkVal == false) {
-        var report = true
-        busses.forEach {
-            it.generateTimes()
-            if (report) {
-                println(++count)
-                report = false
-            }
+//had some help with this one :(
+//https://todd.ginsberg.com/post/advent-of-code/2020/day13/
+fun findBusPattern(busses: List<Bus>): Long {
+    var step = busses.first().bus
+    var time = 0L
+    busses.drop(1).forEach { (offset, bus) ->
+        while ((time + offset) % bus != 0L) {
+            time += step
         }
-
-        for (ts in busses.first().times) {
-            val flagList = busses.map{BigInteger.ZERO}.toMutableList()
-            busses.forEachIndexed { index, bus ->
-                if (index != 0) {
-                    if (bus.check(ts)) {
-                        flagList[index] = ts
-                    }
-                } else {
-                    flagList[index] = ts
-                }
-            }
-            checkVal = !flagList.contains(BigInteger.ZERO)
-            if (checkVal) {
-                timeStamp = flagList.first()
-                break
-            }
-        }
-        busses.forEach { it.cleanUp() }
+        step *= bus // New Ratio!
     }
-    return timeStamp
+    return time
 }
 
 fun main() {
-    val dataFile = "data/test_data_day13"
-//    readBusTimes(dataFile)
-//    println("Earliest Bus I can take is ${findEarliestBus()}")
+    val dataFile = "data/data_day13"
 
-    readBusTimes2(dataFile)
-    println(busses)
-    println("Find bus pattern: ${findBusPattern()}")
+    readBusTimes(dataFile)
+    println("Earliest Bus I can take is ${findEarliestBus()}")
+
+    val input = readBusTimes2(dataFile)
+    //this also was not mine - but I like it!
+    val busses: List<Bus> = input.last().split(",").mapIndexedNotNull { index, s -> if (s == "x") null else Bus(index, s.toLong()) }
+    println("Find bus pattern: ${findBusPattern(busses)}")
 }
