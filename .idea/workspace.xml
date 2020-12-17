@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="86f2a054-4e11-4a79-8bf5-dae0672fdd8d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/day_13.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/day_13.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test_data_day14" beforeDir="false" afterPath="$PROJECT_DIR$/data/test_data_day14" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/day_14.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/day_14.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -153,7 +154,7 @@
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Hithere">
+  <component name="RunManager" selected="Application.Day_14Kt">
     <configuration name="Day_10Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <module name="advent-of-code" />
       <option name="VM_PARAMETERS" />
@@ -206,14 +207,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Day_4Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+    <configuration name="Day_14Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <module name="advent-of-code" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="Day_4Kt" />
+      <option name="MAIN_CLASS_NAME" value="Day_14Kt" />
       <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -234,19 +235,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.Hithere" />
-      <item itemvalue="Application.Day_4Kt" />
       <item itemvalue="Application.Day_10Kt" />
       <item itemvalue="Application.Day_11Kt" />
       <item itemvalue="Application.Day_12Kt" />
       <item itemvalue="Application.Day_13Kt" />
+      <item itemvalue="Application.Day_14Kt" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Day_14Kt" />
         <item itemvalue="Application.Day_13Kt" />
         <item itemvalue="Application.Day_12Kt" />
         <item itemvalue="Application.Day_11Kt" />
         <item itemvalue="Application.Day_10Kt" />
-        <item itemvalue="Application.Day_4Kt" />
       </list>
     </recent_temporary>
   </component>
@@ -322,6 +323,21 @@
           <url>file://$PROJECT_DIR$/src/day_13.kt</url>
           <line>44</line>
           <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/day_14.kt</url>
+          <line>106</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/day_14.kt</url>
+          <line>75</line>
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/day_14.kt</url>
+          <line>76</line>
+          <option name="timeStamp" value="52" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
