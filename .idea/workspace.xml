@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="86f2a054-4e11-4a79-8bf5-dae0672fdd8d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/data/data_day16" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/test_data_day16" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/day_16.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
   </component>
   <component name="FileEditorManager">
     <splitter split-orientation="horizontal" split-proportion="0.5">
@@ -143,29 +152,18 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1607691029573" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="project.propCompiler" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Day_15Kt">
-    <configuration name="Day_11Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="advent-of-code" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="Day_11Kt" />
-      <option name="WORKING_DIRECTORY" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.Day_16Kt">
     <configuration name="Day_12Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <module name="advent-of-code" />
       <option name="VM_PARAMETERS" />
@@ -218,6 +216,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Day_16Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <module name="advent-of-code" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="Day_16Kt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Hithere" type="JetRunConfigurationType">
       <module name="advent-of-code" />
       <option name="VM_PARAMETERS" value="" />
@@ -233,19 +244,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.Hithere" />
-      <item itemvalue="Application.Day_11Kt" />
       <item itemvalue="Application.Day_12Kt" />
       <item itemvalue="Application.Day_13Kt" />
       <item itemvalue="Application.Day_14Kt" />
       <item itemvalue="Application.Day_15Kt" />
+      <item itemvalue="Application.Day_16Kt" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Day_16Kt" />
         <item itemvalue="Application.Day_15Kt" />
         <item itemvalue="Application.Day_14Kt" />
         <item itemvalue="Application.Day_13Kt" />
         <item itemvalue="Application.Day_12Kt" />
-        <item itemvalue="Application.Day_11Kt" />
       </list>
     </recent_temporary>
   </component>
@@ -341,6 +352,16 @@
           <url>file://$PROJECT_DIR$/src/day_15.kt</url>
           <line>6</line>
           <option name="timeStamp" value="53" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/day_16.kt</url>
+          <line>115</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/day_16.kt</url>
+          <line>118</line>
+          <option name="timeStamp" value="56" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
