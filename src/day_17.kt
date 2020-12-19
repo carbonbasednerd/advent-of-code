@@ -1,6 +1,7 @@
 import java.io.File
 
 val cubeData = mutableMapOf<Int, MutableList<MutableList<Boolean>>>()
+val hyperCubeData = mutableMapOf<Int, MutableMap<Int, MutableList<MutableList<Boolean>>>>()
 var width = 0
 var height = 0
 fun readCubeData(fileName: String) {
@@ -157,8 +158,180 @@ fun initCubeSpace(cycles: Int): Int {
     return registerActivity()
 }
 
-//somethings wrong - getting wrong values on cycle 1
+//part two
+fun readHyperCubeData(fileName: String) {
+    val tempList = mutableListOf<MutableList<Boolean>>()
+    File(fileName).forEachLine {
+        tempList.add(it.map { state -> state == '#' }.toMutableList())
+    }
+    val map = mutableMapOf<Int, MutableList<MutableList<Boolean>>>()
+    map[0] = tempList
+    hyperCubeData[0] = map
+    width = hyperCubeData[0]!![0]!![0].size
+    height = hyperCubeData[0]!![0]!!.size
+}
+
+fun expandExistingHyperSpace() {
+    hyperCubeData.forEach { hd ->
+        hd.value.forEach {dim ->
+            dim.value.forEach {
+                it.add(false)
+                it.add(0,false)
+            }
+            val newList = mutableListOf<Boolean>()
+            (1..width).forEach { _ ->
+                newList.add(false)
+            }
+            dim.value.add(0,newList)
+            dim.value.add(newList)
+        }
+    }
+}
+
+fun initNewHyperSpace(w: Int, z: Int) {
+    val tempSpace = mutableListOf<MutableList<Boolean>>()
+    (1..height).forEach { _ ->
+        val tempWidth = mutableListOf<Boolean>()
+        (1..width).forEach { _ ->
+            tempWidth.add(false)
+        }
+        tempSpace.add(tempWidth)
+    }
+    val zmap = mutableMapOf<Int, MutableList<MutableList<Boolean>>>()
+    zmap[z] = tempSpace
+
+    hyperCubeData[w] = zmap
+}
+
+fun hyperLocalityCheck(x: Int, y: Int, z: Int, w: Int): Boolean {
+    if (x < 0 || x >= height || y<0 || y>= width) {
+        return false
+    } else {
+        return hyperCubeData[w]!![z]!![x][y]
+    }
+}
+
+fun HyperplaneCheck(x: Int, y: Int, z: Int, w: Int, home: Boolean): Int {
+    var activeCount = 0
+    if (!home) {
+        if (hyperLocalityCheck(x,y,z,w)) activeCount++
+    }
+    if(hyperLocalityCheck(x-1,y,z,w)) activeCount++
+    if(hyperLocalityCheck(x-1,y-1,z,w)) activeCount++
+    if(hyperLocalityCheck(x-1,y+1,z,w)) activeCount++
+    if(hyperLocalityCheck(x+1,y,z,w)) activeCount++
+    if(hyperLocalityCheck(x+1,y-1,z,w)) activeCount++
+    if(hyperLocalityCheck(x+1,y+1,z,w)) activeCount++
+    if(hyperLocalityCheck(x,y-1,z,w)) activeCount++
+    if(hyperLocalityCheck(x,y+1,z,w)) activeCount++
+
+    return activeCount
+}
+
+fun checkHyperNeighborActivity(x: Int, y: Int, z: Int, w: Int): Int {
+    var activeCount = 0
+
+    (w-1..w+1).forEach {
+        (z-1..z+1).forEach {
+            activeCount += HyperplaneCheck(x, y, z, w, (w==0 && z==0))
+        }
+    }
+    return activeCount
+}
+
+fun registerHyperActivity(): Int {
+    var activeCubes = 0
+    hyperCubeData.forEach {w ->
+        w.value.forEach{z ->
+            z.value.forEach { i ->
+                activeCubes += i.count { x-> x }
+            }
+        }
+    }
+    return activeCubes
+}
+
+fun printHyperDimension(cycle: Int) {
+    println("Cycle $cycle")
+    hyperCubeData.keys.sorted().forEach { w ->
+        hyperCubeData[w]!!.keys.sorted().forEach { z ->
+            println("z=$z : w=$w")
+            printHyperSpace(z, w)
+            println("\n")
+        }
+    }
+    println("\n==============================\n")
+}
+
+fun printHyperSpace(z: Int, w: Int) {
+    hyperCubeData[w]!![z]!!.forEach {
+        println(it.map{x-> if(x) "#" else "."}.toString().replace(",",""))
+    }
+}
+
+
+// I don't like this solution. Too complicated.
+fun initHyperCubeSpace(cycles: Int): Int {
+    var counter = 1
+    printDimension(0)
+    while (counter <= cycles) {
+        //this logic could be improved!
+        height += 2
+        width += 2
+        expandExistingHyperSpace()
+        initNewHyperSpace(counter, counter)
+        initNewHyperSpace(counter*-1, counter)
+        initNewHyperSpace(counter*-1, counter*-1)
+        initNewHyperSpace(counter, counter*-1)
+
+
+        val tempHyperDimensionMap = mutableMapOf<Int, MutableMap<Int, MutableList<MutableList<Boolean>>>>()
+        hyperCubeData.forEach { dimw->
+            val hyperList = mutableMapOf<Int, MutableList<MutableList<Boolean>>>()
+            dimw.value.forEach {z ->
+                val tempSpaceList = mutableListOf<MutableList<Boolean>>()
+                z.value.forEachIndexed {height, h ->
+                    val tempCubeList = mutableListOf<Boolean>()
+                    h.forEachIndexed {width, w ->
+                        val nearbyActivity = checkHyperNeighborActivity(height,width,z.key,dimw.key)
+                        when(w) {
+                            true -> {
+                                if (nearbyActivity in (2..3)){
+                                    tempCubeList.add(true)
+                                } else {
+                                    tempCubeList.add(false)
+                                }
+                            }
+                            false -> {
+                                if (nearbyActivity == 3) {
+                                    tempCubeList.add(true)
+                                } else {
+                                    tempCubeList.add(false)
+                                }
+                            }
+                        }
+                    }
+                    tempSpaceList.add(tempCubeList)
+                }
+                hyperList[z.key] = tempSpaceList
+            }
+            tempHyperDimensionMap[dimw.key] = hyperList
+        }
+
+        hyperCubeData.clear()
+        hyperCubeData.putAll(tempHyperDimensionMap)
+        printHyperDimension(counter)
+        counter++
+
+    }
+    return registerHyperActivity()
+}
+
+
 fun main() {
-    readCubeData("data/data_day17")
-    println("Cube Space Initialized. ${initCubeSpace(6)} cubes active")
+//    readCubeData("data/data_day17")
+//    println("Cube Space Initialized. ${initCubeSpace(6)} cubes active")
+
+    readHyperCubeData("data/test_data_day17")
+    println("Hypercube init: ${initHyperCubeSpace(2)}")
 }
