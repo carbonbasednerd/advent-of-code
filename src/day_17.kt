@@ -18,13 +18,13 @@ fun expandExistingSpace() {
     cubeData.forEach { dimension ->
         dimension.value.forEach {
             it.add(false)
-            it.add(false)
+            it.add(0,false)
         }
         val newList = mutableListOf<Boolean>()
         (1..width).forEach { _ ->
             newList.add(false)
         }
-        dimension.value.add(newList)
+        dimension.value.add(0,newList)
         dimension.value.add(newList)
     }
 }
@@ -111,11 +111,13 @@ fun initCubeSpace(cycles: Int): Int {
     var counter = 1
     printDimension(0)
     while (counter <= cycles) {
-        if (counter > 1) {
-            expandExistingSpace()
-        }
+        //this logic could be improved!
+        height += 2
+        width += 2
+        expandExistingSpace()
         initNewSpace(counter)
         initNewSpace(counter*-1)
+
 
         val tempDimensionMap = mutableMapOf<Int, MutableList<MutableList<Boolean>>>()
         cubeData.forEach {
@@ -150,8 +152,6 @@ fun initCubeSpace(cycles: Int): Int {
         cubeData.putAll(tempDimensionMap)
         printDimension(counter)
         counter++
-        height += 2
-        width += 2
 
     }
     return registerActivity()
@@ -159,6 +159,6 @@ fun initCubeSpace(cycles: Int): Int {
 
 //somethings wrong - getting wrong values on cycle 1
 fun main() {
-    readCubeData("data/test_data_day17")
-    println("Cube Space Initialized. ${initCubeSpace(1)} cubes active")
+    readCubeData("data/data_day17")
+    println("Cube Space Initialized. ${initCubeSpace(6)} cubes active")
 }
