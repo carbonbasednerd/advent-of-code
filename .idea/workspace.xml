@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="86f2a054-4e11-4a79-8bf5-dae0672fdd8d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/day_17.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/day_17.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,20 +160,7 @@
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Day_17Kt">
-    <configuration name="Day_13Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="advent-of-code" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="Day_13Kt" />
-      <option name="WORKING_DIRECTORY" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.Day_18Kt">
     <configuration name="Day_14Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <module name="advent-of-code" />
       <option name="VM_PARAMETERS" />
@@ -227,6 +213,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Day_18Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <module name="advent-of-code" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="Day_18Kt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Hithere" type="JetRunConfigurationType">
       <module name="advent-of-code" />
       <option name="VM_PARAMETERS" value="" />
@@ -242,19 +241,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.Hithere" />
-      <item itemvalue="Application.Day_13Kt" />
       <item itemvalue="Application.Day_14Kt" />
       <item itemvalue="Application.Day_15Kt" />
       <item itemvalue="Application.Day_16Kt" />
       <item itemvalue="Application.Day_17Kt" />
+      <item itemvalue="Application.Day_18Kt" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Day_18Kt" />
         <item itemvalue="Application.Day_17Kt" />
         <item itemvalue="Application.Day_16Kt" />
         <item itemvalue="Application.Day_15Kt" />
         <item itemvalue="Application.Day_14Kt" />
-        <item itemvalue="Application.Day_13Kt" />
       </list>
     </recent_temporary>
   </component>
@@ -308,13 +307,28 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/day_17.kt</url>
-          <line>254</line>
+          <line>229</line>
           <option name="timeStamp" value="84" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/day_17.kt</url>
-          <line>251</line>
+          <line>226</line>
           <option name="timeStamp" value="85" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/day_18.kt</url>
+          <line>41</line>
+          <option name="timeStamp" value="90" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/day_18.kt</url>
+          <line>42</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/day_18.kt</url>
+          <line>33</line>
+          <option name="timeStamp" value="92" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
