@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="86f2a054-4e11-4a79-8bf5-dae0672fdd8d" name="Default Changelist" comment="" />
+    <list default="true" id="86f2a054-4e11-4a79-8bf5-dae0672fdd8d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/day_20.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/day_20.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -158,20 +161,7 @@
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Day_19Kt">
-    <configuration name="Day_15Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="advent-of-code" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="Day_15Kt" />
-      <option name="WORKING_DIRECTORY" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.Day_20Kt">
     <configuration name="Day_16Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <module name="advent-of-code" />
       <option name="VM_PARAMETERS" />
@@ -224,6 +214,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Day_20Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <module name="advent-of-code" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="Day_20Kt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Hithere" type="JetRunConfigurationType">
       <module name="advent-of-code" />
       <option name="VM_PARAMETERS" value="" />
@@ -239,19 +242,19 @@
     </configuration>
     <list>
       <item itemvalue="Application.Hithere" />
-      <item itemvalue="Application.Day_15Kt" />
       <item itemvalue="Application.Day_16Kt" />
       <item itemvalue="Application.Day_17Kt" />
       <item itemvalue="Application.Day_18Kt" />
       <item itemvalue="Application.Day_19Kt" />
+      <item itemvalue="Application.Day_20Kt" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Day_20Kt" />
         <item itemvalue="Application.Day_19Kt" />
         <item itemvalue="Application.Day_18Kt" />
         <item itemvalue="Application.Day_17Kt" />
         <item itemvalue="Application.Day_16Kt" />
-        <item itemvalue="Application.Day_15Kt" />
       </list>
     </recent_temporary>
   </component>
