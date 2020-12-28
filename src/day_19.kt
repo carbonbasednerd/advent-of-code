@@ -1,5 +1,4 @@
 import java.io.File
-import java.lang.NullPointerException
 
 open class BaseRule() {
 }
@@ -34,8 +33,12 @@ fun readRulesAndData(fileName: String) {
                         var branchList = mutableListOf<Int>()
                         numbers.forEach { t ->
                             if (t.isNotEmpty()) {
-                                branchList.add(t.toInt())
-                                if (t.toInt() == ruleNumber) loopy = true
+                                if (t.toInt() == ruleNumber) {
+                                    loopy = true
+                                } else {
+                                    branchList.add(t.toInt())
+                                }
+
                             }
                         }
                         andList.add(branchList)
@@ -60,12 +63,13 @@ fun readRulesAndData(fileName: String) {
     }
 }
 
+lateinit var possibleCombinations: List<String>
+
 // part one
 val ruleMap = mutableMapOf<Int, List<String>>()
 var depth = 0
 fun buildRules(ruleNumber: Int): List<String> {
     println("Depth ${++depth}")
-//    println(ruleMap)
     if (ruleMap.containsKey(ruleNumber)) {
         return ruleMap[ruleNumber]!!
     } else {
@@ -75,23 +79,12 @@ fun buildRules(ruleNumber: Int): List<String> {
             return tempList
         } else {
             val branches = rulesData[ruleNumber] as BranchRule
-            val isLoopy = branches.loops
             val listOfAnds = mutableListOf<List<String>>()
             branches.ands.forEach {
                 var possibleStrings = mutableListOf<String>()
                 it.forEach { i ->
-                    var returnedLists: List<String>
+                    val returnedLists = buildRules(i)
                     val newList = mutableListOf<String>()
-                    if (isLoopy && i == ruleNumber) {
-                        val returnedList = mutableListOf<String>()
-                        listOfAnds.first().forEach { a ->
-                            returnedList.add("S${a}E")
-                        }
-                        returnedLists = returnedList
-                    } else {
-                        returnedLists = buildRules(i)
-                    }
-
                     if (possibleStrings.isNotEmpty()) {
                         possibleStrings.forEach { x ->
                             returnedLists.forEach { y ->
@@ -112,47 +105,9 @@ fun buildRules(ruleNumber: Int): List<String> {
     }
 }
 
-lateinit var possibleCombinations: List<String>
-
-//this has some logic from part two - initially tried to make it all work as one
-//got frustrated and made a second function
-fun solvePart2(): Int {
-    var counter = 0
-    imageData.forEach image@{ image ->
-        var keepLooking = true
-        var index = 0
-        while (keepLooking) {
-            try { //haha so dumb
-                ruleMap[42]!!.forEach {
-                    val length = it.length
-                    if (image.substring(index, length).matches("^${it}$".toRegex())) {
-                        index += length
-                        throw(StackOverflowError("lame"))
-                    }
-                }
-            } catch (error: NullPointerException) {
-                keepLooking = false
-            } catch (error: StackOverflowError){
-                //nuthin
-            }
-        }
-        if (index == 0) {
-            return@image
-        }
-    }
-    return counter
-}
-
-//part 2
 fun solvePart1(): Int {
     var counter = 0
-    println("rules built")
-//    println("Map rule ${ruleMap[8]}")
-//    println("Map rule ${ruleMap[11]}")
-//    println("Map rule ${ruleMap[42]}")
-//    println("Map rule ${ruleMap[31]}")
     imageData.forEach image@{ data ->
-        println("checking image ${data}")
         possibleCombinations.forEach inner@{
             //match up to S
             val startIndex = it.indexOf('S')
@@ -205,13 +160,78 @@ fun solvePart1(): Int {
     return counter
 }
 
+//part 2
+//this has some logic from part two - initially tried to make it all work as one
+//got frustrated and made a second function
+fun solvePart2(): Int {
+    var counter = 0
+    imageData.forEach image@{ image ->
+        var keepLooking = true
+        var index = 0
+        var fourtyTwoCount = 0
+        while (keepLooking) {
+            var newIndex = index
+            try {
+                for (matchString in ruleMap[42]!!) {
+                    val length = matchString.length
+                    if (image.substring(index, length+index).matches("^${matchString}$".toRegex())) {
+                        newIndex += length
+                        fourtyTwoCount++
+                        break
+                    }
+                }
+            } catch (error: StringIndexOutOfBoundsException) {
+                keepLooking = false
+            }
+            if (index == newIndex) {
+                keepLooking = false
+            } else {
+                index = newIndex
+            }
+        }
+        keepLooking = true
+
+        if (index >= image.length || index == 0) {
+            return@image
+        }
+
+        var thirtyOneCount = 0
+        while (keepLooking) {
+            var newIndex = index
+            try { //haha so dumb
+                for (matchString in ruleMap[31]!!) {
+                    val length = matchString.length
+                    if (image.substring(index, length+index).matches("^${matchString}$".toRegex())) {
+                        newIndex += length
+                        thirtyOneCount++
+                        break
+                    }
+                }
+            } catch (error: StringIndexOutOfBoundsException) {
+                keepLooking = false
+            }
+            if (index == newIndex) {
+                keepLooking = false
+            } else {
+                index = newIndex
+            }
+        }
+        val imageLength = image.length
+        if (index == imageLength && fourtyTwoCount > thirtyOneCount) {
+            counter++
+            println("$image 31count = $thirtyOneCount 42count = $fourtyTwoCount")
+        }
+    }
+    return counter
+}
+
 fun main() {
-    readRulesAndData("data/test_data_day19_2")
+    readRulesAndData("data/test_data_day19_3")
     println(rulesData)
     println(imageData)
     println("building rules")
     possibleCombinations = buildRules(0)
     println("Possible combinations ${possibleCombinations.size}")
-//        println("Found ${solvePart1()} matches for Rule 0")
+    println("Found ${solvePart1()} matches for Rule 0")
     println("Found ${solvePart2()} matches for Rule 0 part 2")
 }
