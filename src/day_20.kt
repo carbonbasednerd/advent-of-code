@@ -7,39 +7,49 @@ val tiles = mutableListOf<Tile>()
 data class Tile(
     val tileNumber: Int, val tileLayout: MutableList<String>,
     var top: String = "", var bottom: String = "", var right: String = "",
-    var left: String = "", var rotated: Int = 0, var flipped: Int = 0
+    var left: String = "", var rotated: Int = 0, var flipped: Int = 0,
+    var isTopEdge: Boolean = false, var isBottomEdge: Boolean = false,
+    var isRightEdge: Boolean = false, var isLeftEdge: Boolean = false
 ) {
-    fun calcEdges() {
-        top = tileLayout.first()
-        bottom = tileLayout.last()
-        val leftBuilder = StringBuilder()
-        val rightBuilder = StringBuilder()
+//    fun calcEdges() {
+//        top = tileLayout.first()
+//        bottom = tileLayout.last()
+//        val leftBuilder = StringBuilder()
+//        val rightBuilder = StringBuilder()
+//        tileLayout.forEach {
+//            leftBuilder.append(it.first())
+//            rightBuilder.append(it.last())
+//        }
+//        left = leftBuilder.toString()
+//        right = rightBuilder.toString()
+//    }
+
+//    fun topReversed(): Long = top.reversed().toLong()
+//    fun bottomReversed(): Long = bottom.reversed().toLong()
+//    fun leftReversed(): Long = left.reversed().toLong()
+//    fun rightReversed(): Long = right.reversed().toLong()
+
+    fun topL(): Long = tileLayout.first().toLong()
+    fun bottomL(): Long = tileLayout.last().toLong()
+    fun leftL(): Long {
+        val builder = StringBuilder()
         tileLayout.forEach {
-            leftBuilder.append(it.first())
-            rightBuilder.append(it.last())
+            builder.append(it.first())
         }
-        left = leftBuilder.toString()
-        right = rightBuilder.toString()
+        return builder.toString().toLong()
     }
 
-    fun topReversed(): Long = top.reversed().toLong()
-    fun bottomReversed(): Long = bottom.reversed().toLong()
-    fun leftReversed(): Long = left.reversed().toLong()
-    fun rightReversed(): Long = right.reversed().toLong()
-
-    fun topL(): Long = top.toLong()
-    fun bottomL(): Long = bottom.toLong()
-    fun leftL(): Long = left.toLong()
-    fun rightL(): Long = right.toLong()
+    fun rightL(): Long {
+        val builder = StringBuilder()
+        tileLayout.forEach {
+            builder.append(it.last())
+        }
+        return builder.toString().toLong()
+    }
 
     fun printTile() {
         tileLayout.forEach {
             println(it)
-        }
-    }
-    fun rotateLayout(turns: Int) {
-        (0..turns-1).forEach {
-            rotate()
         }
     }
 
@@ -48,14 +58,14 @@ data class Tile(
         val n = tileLayout[0].length;
 
         val rotatedLayout = mutableListOf<StringBuilder>()
-        rotatedLayout.addAll(tileLayout.map { StringBuilder(it)})
-        (0..m-1).forEachIndexed { ix, x ->
-            (0..n-1).forEachIndexed { iy, y ->
-                rotatedLayout[iy][m-ix-1] = tileLayout[ix][iy]
+        rotatedLayout.addAll(tileLayout.map { StringBuilder(it) })
+        (0..m - 1).forEachIndexed { ix, x ->
+            (0..n - 1).forEachIndexed { iy, y ->
+                rotatedLayout[iy][m - ix - 1] = tileLayout[ix][iy]
             }
         }
         tileLayout.clear()
-        tileLayout.addAll(rotatedLayout.map{ it.toString() })
+        tileLayout.addAll(rotatedLayout.map { it.toString() })
     }
 
     fun flipHead() {
@@ -66,6 +76,7 @@ data class Tile(
 
     }
 }
+
 
 fun readTiles(fileName: String) {
     var newTile = true
@@ -95,15 +106,15 @@ fun readTiles(fileName: String) {
 }
 
 //part one
-fun calculateEdges() {
-    tiles.forEach {
-        it.calcEdges()
-    }
-}
+//fun calculateEdges() {
+//    tiles.forEach {
+//        it.calcEdges()
+//    }
+//}
 
+var tileCorners = mutableListOf<Tile>()
 fun tilesAssemble(): Long {
     var answer = 1L
-    var tileCorners = mutableListOf<Tile>()
     tiles.forEach main@{ t ->
         var bottom = false
         var top = false
@@ -111,77 +122,110 @@ fun tilesAssemble(): Long {
         var left = false
         tiles.forEach sub@{
             if (it.tileNumber == t.tileNumber) return@sub
-            if (usedTiles.contains(it.tileNumber)) return@sub
 
-            //unmodified
-            if ((t.topL() xor it.bottomL()) == 0L) top = true
-            if ((t.bottomL() xor it.topL()) == 0L) bottom = true
-            if ((t.rightL() xor it.leftL()) == 0L) right = true
-            if ((t.leftL() xor it.rightL()) == 0L) left = true
+            (1..4).forEach { i ->
+                if ((t.topL() xor it.bottomL()) == 0L) top = true
+                if ((t.bottomL() xor it.topL()) == 0L) bottom = true
+                if ((t.rightL() xor it.leftL()) == 0L) right = true
+                if ((t.leftL() xor it.rightL()) == 0L) left = true
+                it.rotate()
+            }
 
-            //rotated 90
-            if ((t.topL() xor it.rightReversed()) == 0L) top = true
-            if ((t.bottomL() xor it.leftReversed()) == 0L) bottom = true
-            if ((t.rightL() xor it.bottomL()) == 0L) right = true
-            if ((t.leftL() xor it.topL()) == 0L) left = true
+            it.flipSides()
+            (1..4).forEach { i ->
+                if ((t.topL() xor it.bottomL()) == 0L) top = true
+                if ((t.bottomL() xor it.topL()) == 0L) bottom = true
+                if ((t.rightL() xor it.leftL()) == 0L) right = true
+                if ((t.leftL() xor it.rightL()) == 0L) left = true
+                it.rotate()
+            }
 
-            //rotated 180
-            if ((t.topL() xor it.topReversed()) == 0L) top = true
-            if ((t.bottomL() xor it.bottomReversed()) == 0L) bottom = true
-            if ((t.rightL() xor it.rightReversed()) == 0L) right = true
-            if ((t.leftL() xor it.leftReversed()) == 0L) left = true
+            //reset
+            it.flipSides()
 
-            //flipped left right
-            if ((t.topL() xor it.bottomReversed()) == 0L) top = true
-            if ((t.bottomL() xor it.topReversed()) == 0L) bottom = true
-            if ((t.rightL() xor it.rightL()) == 0L) right = true
-            if ((t.leftL() xor it.leftL()) == 0L) left = true
+            it.flipHead()
+            (1..4).forEach { i ->
+                if ((t.topL() xor it.bottomL()) == 0L) top = true
+                if ((t.bottomL() xor it.topL()) == 0L) bottom = true
+                if ((t.rightL() xor it.leftL()) == 0L) right = true
+                if ((t.leftL() xor it.rightL()) == 0L) left = true
+                it.rotate()
+            }
 
-            //flipped left right 90
-            if ((t.topL() xor it.leftReversed()) == 0L) top = true
-            if ((t.bottomL() xor it.rightReversed()) == 0L) bottom = true
-            if ((t.rightL() xor it.bottomReversed()) == 0L) right = true
-            if ((t.leftL() xor it.topReversed()) == 0L) left = true
+            //reset
+            it.flipHead()
 
-            //flipped left right 180
-            if ((t.topL() xor it.topL()) == 0L) top = true
-            if ((t.bottomL() xor it.bottomL()) == 0L) bottom = true
-            if ((t.rightL() xor it.leftReversed()) == 0L) right = true
-            if ((t.leftL() xor it.rightReversed()) == 0L) left = true
-
-            //flipped left right 270
-            if ((t.topL() xor it.rightL()) == 0L) top = true
-            if ((t.bottomL() xor it.leftL()) == 0L) bottom = true
-            if ((t.rightL() xor it.topL()) == 0L) right = true
-            if ((t.leftL() xor it.bottomL()) == 0L) left = true
-
-            //flipped top bottom
-            if ((t.topL() xor it.topReversed()) == 0L) top = true
-            if ((t.bottomL() xor it.bottomReversed()) == 0L) bottom = true
-            if ((t.rightL() xor it.leftL()) == 0L) right = true
-            if ((t.leftL() xor it.rightL()) == 0L) left = true
-
-            //flipped top bottom 90
-            if ((t.topL() xor it.rightReversed()) == 0L) top = true
-            if ((t.bottomL() xor it.leftReversed()) == 0L) bottom = true
-            if ((t.rightL() xor it.topReversed()) == 0L) right = true
-            if ((t.leftL() xor it.bottomReversed()) == 0L) left = true
-
-            //flipped top bottom 180
-            if ((t.topL() xor it.bottomL()) == 0L) top = true
-            if ((t.bottomL() xor it.topL()) == 0L) bottom = true
-            if ((t.rightL() xor it.rightReversed()) == 0L) right = true
-            if ((t.leftL() xor it.leftReversed()) == 0L) left = true
-
-            //flipped top bottom 270
-            if ((t.topL() xor it.leftL()) == 0L) top = true
-            if ((t.bottomL() xor it.rightL()) == 0L) bottom = true
-            if ((t.rightL() xor it.bottomL()) == 0L) right = true
-            if ((t.leftL() xor it.topL()) == 0L) left = true
+//            //unmodified
+//            if ((t.topL() xor it.bottomL()) == 0L) top = true
+//            if ((t.bottomL() xor it.topL()) == 0L) bottom = true
+//            if ((t.rightL() xor it.leftL()) == 0L) right = true
+//            if ((t.leftL() xor it.rightL()) == 0L) left = true
+//
+//            //rotated 90
+//            if ((t.topL() xor it.rightReversed()) == 0L) top = true
+//            if ((t.bottomL() xor it.leftReversed()) == 0L) bottom = true
+//            if ((t.rightL() xor it.bottomL()) == 0L) right = true
+//            if ((t.leftL() xor it.topL()) == 0L) left = true
+//
+//            //rotated 180
+//            if ((t.topL() xor it.topReversed()) == 0L) top = true
+//            if ((t.bottomL() xor it.bottomReversed()) == 0L) bottom = true
+//            if ((t.rightL() xor it.rightReversed()) == 0L) right = true
+//            if ((t.leftL() xor it.leftReversed()) == 0L) left = true
+//
+//            //flipped left right
+//            if ((t.topL() xor it.bottomReversed()) == 0L) top = true
+//            if ((t.bottomL() xor it.topReversed()) == 0L) bottom = true
+//            if ((t.rightL() xor it.rightL()) == 0L) right = true
+//            if ((t.leftL() xor it.leftL()) == 0L) left = true
+//
+//            //flipped left right 90
+//            if ((t.topL() xor it.leftReversed()) == 0L) top = true
+//            if ((t.bottomL() xor it.rightReversed()) == 0L) bottom = true
+//            if ((t.rightL() xor it.bottomReversed()) == 0L) right = true
+//            if ((t.leftL() xor it.topReversed()) == 0L) left = true
+//
+//            //flipped left right 180
+//            if ((t.topL() xor it.topL()) == 0L) top = true
+//            if ((t.bottomL() xor it.bottomL()) == 0L) bottom = true
+//            if ((t.rightL() xor it.leftReversed()) == 0L) right = true
+//            if ((t.leftL() xor it.rightReversed()) == 0L) left = true
+//
+//            //flipped left right 270
+//            if ((t.topL() xor it.rightL()) == 0L) top = true
+//            if ((t.bottomL() xor it.leftL()) == 0L) bottom = true
+//            if ((t.rightL() xor it.topL()) == 0L) right = true
+//            if ((t.leftL() xor it.bottomL()) == 0L) left = true
+//
+//            //flipped top bottom
+//            if ((t.topL() xor it.topReversed()) == 0L) top = true
+//            if ((t.bottomL() xor it.bottomReversed()) == 0L) bottom = true
+//            if ((t.rightL() xor it.leftL()) == 0L) right = true
+//            if ((t.leftL() xor it.rightL()) == 0L) left = true
+//
+//            //flipped top bottom 90
+//            if ((t.topL() xor it.rightReversed()) == 0L) top = true
+//            if ((t.bottomL() xor it.leftReversed()) == 0L) bottom = true
+//            if ((t.rightL() xor it.topReversed()) == 0L) right = true
+//            if ((t.leftL() xor it.bottomReversed()) == 0L) left = true
+//
+//            //flipped top bottom 180
+//            if ((t.topL() xor it.bottomL()) == 0L) top = true
+//            if ((t.bottomL() xor it.topL()) == 0L) bottom = true
+//            if ((t.rightL() xor it.rightReversed()) == 0L) right = true
+//            if ((t.leftL() xor it.leftReversed()) == 0L) left = true
+//
+//            //flipped top bottom 270
+//            if ((t.topL() xor it.leftL()) == 0L) top = true
+//            if ((t.bottomL() xor it.rightL()) == 0L) bottom = true
+//            if ((t.rightL() xor it.bottomL()) == 0L) right = true
+//            if ((t.leftL() xor it.topL()) == 0L) left = true
 
         }
         if (!top && !left && right && bottom) {
             answer *= t.tileNumber
+            t.isTopEdge = true
+            t.isLeftEdge = true
             tileCorners.add(t)
             combinedImage[0][0] = t
             usedTiles.add(t.tileNumber)
@@ -190,22 +234,28 @@ fun tilesAssemble(): Long {
 
         if (!top && !right && left && bottom) {
             answer *= t.tileNumber
+            t.isTopEdge = true
+            t.isRightEdge = true
             tileCorners.add(t)
-            combinedImage[0][dimensions-1] = t
+            combinedImage[0][dimensions - 1] = t
             usedTiles.add(t.tileNumber)
             println("Tile: ${t.tileNumber}")
         }
         if (!bottom && !left && right && top) {
             answer *= t.tileNumber
+            t.isBottomEdge = true
+            t.isLeftEdge = true
             tileCorners.add(t)
-            combinedImage[dimensions-1][0] = t
+            combinedImage[dimensions - 1][0] = t
             usedTiles.add(t.tileNumber)
             println("Tile: ${t.tileNumber}")
         }
         if (!bottom && !right && left && top) {
             answer *= t.tileNumber
+            t.isBottomEdge = true
+            t.isRightEdge = true
             tileCorners.add(t)
-            combinedImage[dimensions-1][dimensions-1] = t
+            combinedImage[dimensions - 1][dimensions - 1] = t
             usedTiles.add(t.tileNumber)
             println("Tile: ${t.tileNumber}")
         }
@@ -220,22 +270,22 @@ val combinedImage = mutableListOf<MutableList<Tile?>>()
 var dimensions = 0
 var usedTiles = mutableSetOf<Int>()
 
-fun fitTileTop(piece: Long) : Tile {
+fun fitTileTop(piece: Long): Tile {
     var top = false
-    tiles.dropWhile{usedTiles.contains(it.tileNumber)}.forEach main@{ it ->
+    tiles.dropWhile { usedTiles.contains(it.tileNumber) }.forEach main@{ it ->
 
-        (1..3).forEach {i ->
+        (1..4).forEach { i ->
             if ((piece xor it.leftL()) == 0L) top = true
-            if(top) {
+            if (top) {
                 return it
             }
             it.rotate()
         }
 
         it.flipSides()
-        (1..4).forEach {i ->
+        (1..4).forEach { i ->
             if ((piece xor it.leftL()) == 0L) top = true
-            if(top) {
+            if (top) {
                 return it
             }
             it.rotate()
@@ -245,9 +295,9 @@ fun fitTileTop(piece: Long) : Tile {
         it.flipSides()
 
         it.flipHead()
-        (1..4).forEach {i ->
+        (1..4).forEach { i ->
             if ((piece xor it.leftL()) == 0L) top = true
-            if(top) {
+            if (top) {
                 return it
             }
             it.rotate()
@@ -260,22 +310,22 @@ fun fitTileTop(piece: Long) : Tile {
     return Tile(0, mutableListOf("000"))
 }
 
-fun fitTile(piece: Long) : Tile {
+fun fitTile(piece: Long): Tile {
     var top = false
-    tiles.dropWhile{usedTiles.contains(it.tileNumber)}.forEach main@{ it ->
+    tiles.dropWhile { usedTiles.contains(it.tileNumber) }.forEach main@{ it ->
 
-        (1..3).forEach {i ->
+        (1..4).forEach { i ->
             if ((piece xor it.topL()) == 0L) top = true
-            if(top) {
+            if (top) {
                 return it
             }
             it.rotate()
         }
 
         it.flipSides()
-        (1..4).forEach {i ->
+        (1..4).forEach { i ->
             if ((piece xor it.topL()) == 0L) top = true
-            if(top) {
+            if (top) {
                 return it
             }
             it.rotate()
@@ -285,9 +335,9 @@ fun fitTile(piece: Long) : Tile {
         it.flipSides()
 
         it.flipHead()
-        (1..4).forEach {i ->
+        (1..4).forEach { i ->
             if ((piece xor it.topL()) == 0L) top = true
-            if(top) {
+            if (top) {
                 return it
             }
             it.rotate()
@@ -316,9 +366,9 @@ fun imagesAssembleFull() {
             if (y != null) return@inner
             var tile: Tile
             if (ix == 0) {
-                tile = fitTileTop(combinedImage[ix][iy-1]!!.rightL())
+                tile = fitTileTop(combinedImage[ix][iy - 1]!!.rightL())
             } else {
-                tile = fitTile(combinedImage[ix-1][iy]!!.bottomL())
+                tile = fitTile(combinedImage[ix - 1][iy]!!.bottomL())
             }
             usedTiles.add(tile.tileNumber)
             combinedImage[ix][iy] = tile
@@ -330,10 +380,10 @@ fun main() {
     readTiles("data/test_data_day20")
     dimensions = 3
     initCombinedImage()
-    calculateEdges()
+//    calculateEdges()
     println(tiles.count())
     println(tiles)
     println("All the corners = ${tilesAssemble()}")
     imagesAssembleFull()
-    println(combinedImage.map{it.map{x->x!!.tileNumber}})
+    println(combinedImage.map { it.map { x -> x!!.tileNumber } })
 }
