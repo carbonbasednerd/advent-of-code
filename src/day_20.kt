@@ -103,7 +103,7 @@ fun calculateEdges() {
 
 fun tilesAssemble(): Long {
     var answer = 1L
-    var tileCorners = mutableListOf<Int>()
+    var tileCorners = mutableListOf<Tile>()
     tiles.forEach main@{ t ->
         var bottom = false
         var top = false
@@ -111,6 +111,7 @@ fun tilesAssemble(): Long {
         var left = false
         tiles.forEach sub@{
             if (it.tileNumber == t.tileNumber) return@sub
+            if (usedTiles.contains(it.tileNumber)) return@sub
 
             //unmodified
             if ((t.topL() xor it.bottomL()) == 0L) top = true
@@ -179,31 +180,32 @@ fun tilesAssemble(): Long {
             if ((t.leftL() xor it.topL()) == 0L) left = true
 
         }
-        if (top && left && !right && !bottom) {
+        if (!top && !left && right && bottom) {
             answer *= t.tileNumber
-            tileCorners.add(t.tileNumber)
-            combinedImage[dimensions-1][dimensions-1] = t
+            tileCorners.add(t)
+            combinedImage[0][0] = t
             usedTiles.add(t.tileNumber)
             println("Tile: ${t.tileNumber}")
         }
-        if (top && right && !left && !bottom) {
+
+        if (!top && !right && left && bottom) {
             answer *= t.tileNumber
-            tileCorners.add(t.tileNumber)
-            combinedImage[dimensions-1][0] = t
-            usedTiles.add(t.tileNumber)
-            println("Tile: ${t.tileNumber}")
-        }
-        if (bottom && left && !top && !right) {
-            answer *= t.tileNumber
-            tileCorners.add(t.tileNumber)
+            tileCorners.add(t)
             combinedImage[0][dimensions-1] = t
             usedTiles.add(t.tileNumber)
             println("Tile: ${t.tileNumber}")
         }
-        if (bottom && right && !top && !left) {
+        if (!bottom && !left && right && top) {
             answer *= t.tileNumber
-            tileCorners.add(t.tileNumber)
-            combinedImage[0][0] = t
+            tileCorners.add(t)
+            combinedImage[dimensions-1][0] = t
+            usedTiles.add(t.tileNumber)
+            println("Tile: ${t.tileNumber}")
+        }
+        if (!bottom && !right && left && top) {
+            answer *= t.tileNumber
+            tileCorners.add(t)
+            combinedImage[dimensions-1][dimensions-1] = t
             usedTiles.add(t.tileNumber)
             println("Tile: ${t.tileNumber}")
         }
@@ -220,7 +222,7 @@ var usedTiles = mutableSetOf<Int>()
 
 fun fitTileTop(piece: Long) : Tile {
     var top = false
-    tiles.forEach main@{ it ->
+    tiles.dropWhile{usedTiles.contains(it.tileNumber)}.forEach main@{ it ->
 
         (1..3).forEach {i ->
             if ((piece xor it.leftL()) == 0L) top = true
@@ -260,7 +262,7 @@ fun fitTileTop(piece: Long) : Tile {
 
 fun fitTile(piece: Long) : Tile {
     var top = false
-    tiles.forEach main@{ it ->
+    tiles.dropWhile{usedTiles.contains(it.tileNumber)}.forEach main@{ it ->
 
         (1..3).forEach {i ->
             if ((piece xor it.topL()) == 0L) top = true
@@ -312,19 +314,26 @@ fun imagesAssembleFull() {
     combinedImage.forEachIndexed { ix, x ->
         x.forEachIndexed inner@{ iy, y ->
             if (y != null) return@inner
-            var topToMatch = -1L
-            var leftToMatch = -1L
-            if (ix != 0) topToMatch = combinedImage[ix - 1][iy]!!.bottomL()
+            var tile: Tile
+            if (ix == 0) {
+                tile = fitTileTop(combinedImage[ix][iy-1]!!.rightL())
+            } else {
+                tile = fitTile(combinedImage[ix-1][iy]!!.bottomL())
+            }
+            usedTiles.add(tile.tileNumber)
+            combinedImage[ix][iy] = tile
         }
     }
 }
 
 fun main() {
     readTiles("data/test_data_day20")
-    dimensions = tiles.size / 2
+    dimensions = 3
     initCombinedImage()
     calculateEdges()
     println(tiles.count())
     println(tiles)
     println("All the corners = ${tilesAssemble()}")
+    imagesAssembleFull()
+    println(combinedImage.map{it.map{x->x!!.tileNumber}})
 }
