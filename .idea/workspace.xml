@@ -376,16 +376,6 @@
           <line>193</line>
           <option name="timeStamp" value="144" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/day_20.kt</url>
-          <line>184</line>
-          <option name="timeStamp" value="146" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/day_20.kt</url>
-          <line>182</line>
-          <option name="timeStamp" value="155" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
