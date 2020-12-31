@@ -67,7 +67,7 @@ data class Tile(
     }
 
     fun stripEdges() {
-        println(tileLayout)
+        println("Stripping $tileNumber")
         tileLayout.removeAt(0)
         tileLayout.removeAt(tileLayout.size-1)
         val tempList = mutableListOf<String>()
@@ -76,7 +76,6 @@ data class Tile(
         }
         tileLayout.clear()
         tileLayout.addAll(tempList)
-        println(tileLayout)
     }
 }
 
@@ -110,6 +109,7 @@ fun readTiles(fileName: String) {
 
 //part one
 fun tilesAssemble(): Long {
+    var foundCorner = false
     var answer = 1L
     tiles.forEach main@{ t ->
         var bottom = false
@@ -177,8 +177,8 @@ fun tilesAssemble(): Long {
             println("Tile: ${t.tileNumber}")
         }
 
-        //todo: need to align the corners with an edge
-        if (t.isTopEdge && t.isLeftEdge) {
+        //todo: need to align the corners with an edge (1399)
+        if (t.isTopEdge && t.isLeftEdge && t.tileNumber==1399) {
             combinedImage[0][0] = t
             usedTiles.add(t.tileNumber)
         }
@@ -302,6 +302,7 @@ fun imagesAssembleFull() {
     }
 }
 
+lateinit var finalImageTile: Tile
 fun mergePhotoData() {
     combinedImage.forEach {
         it.forEach { t ->
@@ -311,24 +312,72 @@ fun mergePhotoData() {
 
     val dataSize = combinedImage[0][0]!!.tileLayout.size
     val perLine = combinedImage[0].size
+    val finalImage = mutableListOf<String>()
     combinedImage.forEach {
-        
+        (0 until dataSize).forEach { a ->
+            val fullImageString = StringBuilder()
+            (0 until perLine).forEach {b ->
+                fullImageString.append(it[b]!!.tileLayout[a])
+            }
+            finalImage.add(fullImageString.toString())
+        }
     }
+    finalImageTile = Tile(0, finalImage)
+}
+
+fun findTheMonster() {
+    var currentIndex = 0
+    var found = 0
+    while (found == 0) {
+        while (currentIndex < finalImageTile.tileLayout.size) {
+            //check for regex
+            val middle = "1....11....11....111".toRegex()
+            val tileSlice = finalImageTile.tileLayout[currentIndex]
+            val findResult = middle.find(tileSlice)
+            var foundOne = false
+            if (findResult != null) {
+                val range = findResult.range
+                if (currentIndex != 0 && currentIndex < finalImageTile.tileLayout.size) {
+                    val headSlice = finalImageTile.tileLayout[currentIndex - 1]
+                    val bellySlice = finalImageTile.tileLayout[currentIndex + 1]
+                    if (headSlice[range.last - 1] == '1') {
+                        val bellySubString = bellySlice.substring(range.first + 1, range.last - 2)
+                        val bellyRegEx = "1..1..1..1..1..1".toRegex()
+                        if (bellySubString.contains(bellyRegEx)) {
+                            foundOne = true
+                        }
+                    }
+                }
+            }
+
+            if (foundOne) {
+                found++
+                currentIndex += 2
+            } else {
+                currentIndex++
+            }
+        }
+        if (found == 0) {
+            finalImageTile.rotate()
+            currentIndex = 0
+            println("Rotated...")
+        }
+    }
+
+    println(found)
 }
 
 fun main() {
-    readTiles("data/test_data_day20")
-    dimensions = 3
+    readTiles("data/data_day20")
+    dimensions = tiles.size / 2
     initCombinedImage()
 //    calculateEdges()
 //    println(tiles.count())
 //    println(tiles)
     println("All the corners = ${tilesAssemble()}")
     imagesAssembleFull()
-    println(combinedImage.map { it.map { x -> x!!.tileNumber } })
+//    println(combinedImage.map { it.map { x -> x!!.tileNumber } })
     mergePhotoData()
-
-    //once the image is fully assembled strip out the borders for each tile and combine them into one
-    //2d images. Then do a pattern match for the dragon shape. Any time a dragon shape is found change
-    //1's to 0.  At the end, count the waves remaining.
+//    println(finalImage)
+    findTheMonster()
 }
